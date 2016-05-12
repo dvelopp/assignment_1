@@ -1,65 +1,19 @@
 package services;
 
-import java.io.IOException;
-import java.util.ArrayList;
+import product.domain.Product;
+import product.service.ProductService;
+import report.ReportType;
 
-/**
- * Main service.
- */
+import java.util.List;
+
 public class MainService {
 
-    //Injected using DI (e.g. spring)
-    ProductService productService;
-    //Injected using DI (e.g. spring)
-    HTMLReportService htmlReportService;
-    //Injected using DI (e.g. spring)
-    CSVReportService csvReportService;
+    private ProductService productService;
+    private PrintService printService;
 
-
-    String getCSVReport() {
-        ArrayList products = productService.getAllProducts();
-        return csvReportService.generateUniqueProductReport(products);
+    public void printReport(ReportType reportType) {
+        List<Product> products = productService.getAllProducts();
+        printService.printUniqueObjectsReport(products, Product.class, reportType);
     }
 
-    String getHtmlReport() {
-        ArrayList products = productService.getAllProducts();
-        return htmlReportService.generateUniqueProductReport(products);
-    }
-
-    public void prinntReport(String name) {
-        if (name == "CSV") {
-            String report = getCSVReport();
-            try {
-                print(report);
-            } catch (Throwable throwable) {
-                //print error to console
-                System.out.println(throwable);
-                //Exit method without error
-                System.exit(0);
-            }
-        }
-        if (name == "HTML") {
-            String report = getHtmlReport();
-            try {
-                print(report);
-            } catch (Throwable throwable) {
-                //print error to console
-                System.out.println(throwable);
-                //Exit method without error
-                System.exit(0);
-            }
-        }
-    }
-
-
-    /**
-     * Prints given string to some printer.
-     *
-     * @param report
-     * @throws IOException
-     */
-    void print(String report) throws IOException {
-        //PRINT REPORT
-        //STUB
-    }
 }
